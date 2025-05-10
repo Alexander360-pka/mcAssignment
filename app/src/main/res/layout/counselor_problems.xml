@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/counselor_signup_back">
+
+    <TextView
+        android:id="@+id/which_probs"
+        android:layout_width="268dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="42dp"
+        android:layout_marginBottom="634dp"
+        android:text="Which categories of problems do you feel comfortable dealing with?"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <CheckBox
+        android:id="@+id/check_cat1"
+        android:layout_width="305dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="59dp"
+        android:layout_marginTop="144dp"
+        android:layout_marginEnd="47dp"
+        android:layout_marginBottom="543dp"
+        android:text="Category 1"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/desc_cat1"
+        android:layout_width="274dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="46dp"
+        android:text="Description"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/check_cat1"
+        app:layout_constraintTop_toBottomOf="@+id/check_cat1" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
