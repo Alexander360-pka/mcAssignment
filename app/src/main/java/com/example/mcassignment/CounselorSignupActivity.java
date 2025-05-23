@@ -118,10 +118,10 @@ public class CounselorSignupActivity extends AppCompatActivity {
                     .add("password", passStr)
                     .build();
 
-            Request request = new Request.Builder()
-                    .url()
-                    .post(formBody)
-                    .build();
+                Request request = new Request.Builder()
+                        .url("https://lamp.ms.wits.ac.za/home/s2819916/solace/couns_signup.php")
+                        .post(formBody)
+                        .build();
 
             client.newCall(request).enqueue(new Callback() {
                 @Override
@@ -135,20 +135,25 @@ public class CounselorSignupActivity extends AppCompatActivity {
                         throw new IOException("Unexpected code " + response);
                     }
 
-                    final String responseData = response.body().string();
+                        runOnUiThread(() -> {
+                            startActivity(new Intent(CounselorSignupActivity.this, CounselorProblems.class));
+                        });
 
-                    CounselorSignupActivity.this.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                processJSON(responseData);
-                            } catch (JSONException e) {
-                                throw new RuntimeException(e);
-                            }
-                        }
-                    });
-                }
-            });
-            });
+                        final String responseData = response.body().string();
+
+    //                    CounselorSignupActivity.this.runOnUiThread(new Runnable() {
+    //                        @Override
+    //                        public void run() {
+    //                            try {
+    //                                processJSON(responseData);
+    //                            } catch (JSONException e) {
+    //                                throw new RuntimeException(e);
+    //                            }
+    //                        }
+    //                    });
+                    }
+                });
+            }
+        });
     }
 }

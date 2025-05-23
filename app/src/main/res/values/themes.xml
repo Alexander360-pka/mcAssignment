@@ -6,4 +6,12 @@
     </style>
 
     <style name="Theme.McAssignment" parent="Base.Theme.McAssignment" />
+
+<!--    <style name="Theme.McAssignment" parent="Theme.AppCompat.Light.DarkActionBar">-->
+<!--        &lt;!&ndash; Primary brand color. &ndash;&gt;-->
+<!--        <item name="colorPrimary">@color/purple_500</item>-->
+<!--        <item name="colorPrimaryDark">@color/purple_700</item>-->
+<!--        <item name="colorAccent">@color/teal_200</item>-->
+<!--        &lt;!&ndash; Customize your theme here. &ndash;&gt;-->
+<!--    </style>-->
 </resources>
