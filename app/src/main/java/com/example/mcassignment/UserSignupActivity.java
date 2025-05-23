@@ -9,44 +9,25 @@ import android.widget.EditText;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.json.JSONException;
-
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.FormBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-
-public class CounselorSignupActivity extends AppCompatActivity {
+public class UserSignupActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //ENSURES THAT THE LAYOUT FILE IS DISPLAYED
-        setContentView(R.layout.counselor_signup);
-
-        EditText password = findViewById(R.id.couns_password);
-        EditText passConf = findViewById(R.id.couns_pass_conf);
-        EditText fname = findViewById(R.id.couns_fname);
-        EditText lname = findViewById(R.id.couns_lname);
-        EditText creds = findViewById(R.id.couns_creds);
+        setContentView(R.layout.user_signup);
 
         //A MAP OF FIELDS AND THEIR ERROR MESSAGES
         Map<EditText, String> fields = new HashMap<>();
-        fields.put(fname, "First name is required");
-        fields.put(lname, "Last name is required");
-        fields.put(password, "Password is required");
-        fields.put(passConf, "Password confirmation is required");
-        fields.put(creds, "Credentials are required");
+        fields.put(findViewById(R.id.username), "Username is required");
+        fields.put(findViewById(R.id.userPassword), "Password is required");
+        fields.put(findViewById(R.id.userConfPass), "Password confirmation is required");
 
-        Button proceed = findViewById(R.id.proceed_button);
+        Button proceed = findViewById(R.id.user_proceed_button);
         proceed.setOnClickListener(v -> {
-            // LOOPS THROUGH EACH FIELD AND ENSURES THAT THEY ARE NOT EMPTY
+            //LOOPS THROUGH EACH FIELD AND ENSURES THAT THEY ARE NOT EMPTY
             boolean isValid = true;
             for (Map.Entry<EditText, String> entry : fields.entrySet()) {
                 EditText field = entry.getKey();
@@ -62,13 +43,39 @@ public class CounselorSignupActivity extends AppCompatActivity {
                 }
             }
 
+            EditText password = findViewById(R.id.userPassword);
+            EditText passConf = findViewById(R.id.userConfPass);
+            EditText username = findViewById(R.id.username);
             String passStr = password.getText().toString();
             String passConfStr = passConf.getText().toString();
-            String fnameStr = fname.getText().toString();
-            String lnameStr = lname.getText().toString();
-            String credsStr = creds.getText().toString();
+            String usernameStr = username.getText().toString();
 
-            //ENSURE PASSWORD IS STRONG IF IT IS NOT EMPTY
+            //ENSURE USERNAME IS FORMATTED CORRECTLY
+            if (!usernameStr.isEmpty()) {
+                if (usernameStr.length() < 6 || usernameStr.length() > 30) {
+                    username.setError("Username must be 6-30 characters long");
+                    if (isValid) {
+                        username.requestFocus();
+                        isValid = false;
+                    }
+                }
+                else if (usernameStr.contains(" ")) {
+                    username.setError("Username cannot contain spaces");
+                    if (isValid) {
+                        username.requestFocus();
+                        isValid = false;
+                    }
+                }
+                else if (!usernameStr.matches("^[a-zA-Z0-9._-]+$")) {
+                    username.setError("Only letters, numbers and .-_ allowed");
+                    if (isValid) {
+                        username.requestFocus();
+                        isValid = false;
+                    }
+                }
+            }
+
+            //ENSURE PASSWORD IS STRONG IF IT NOT EMPTY
             if(!passStr.isEmpty()){
                 if (passStr.length() < 8) {
                     password.setError("Password must be at least 8 characters");
@@ -106,49 +113,8 @@ public class CounselorSignupActivity extends AppCompatActivity {
 
             //PROCEEDS TO NEXT SCREEN IF ALL FIELDS ARE VALID
             if (isValid) {
-                startActivity(new Intent(CounselorSignupActivity.this, CounselorProblems.class));
+                startActivity(new Intent(UserSignupActivity.this, UserProblems.class));
             }
-
-            OkHttpClient client = new OkHttpClient();
-
-            RequestBody formBody = new FormBody.Builder()
-                    .add("first_name", fnameStr)
-                    .add("last_name", lnameStr)
-                    .add("credentials", credsStr)
-                    .add("password", passStr)
-                    .build();
-
-            Request request = new Request.Builder()
-                    .url()
-                    .post(formBody)
-                    .build();
-
-            client.newCall(request).enqueue(new Callback() {
-                @Override
-                public void onFailure(Call call, IOException e) {
-                    e.printStackTrace();
-                }
-
-                @Override
-                public void onResponse(Call call, final Response response) throws IOException {
-                    if (!response.isSuccessful()) {
-                        throw new IOException("Unexpected code " + response);
-                    }
-
-                    final String responseData = response.body().string();
-
-                    CounselorSignupActivity.this.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                processJSON(responseData);
-                            } catch (JSONException e) {
-                                throw new RuntimeException(e);
-                            }
-                        }
-                    });
-                }
-            });
-            });
+        });
     }
 }
