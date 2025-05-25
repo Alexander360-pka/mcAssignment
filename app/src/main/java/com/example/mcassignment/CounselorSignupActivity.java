@@ -90,7 +90,7 @@ public class CounselorSignupActivity extends AppCompatActivity {
                     if (isValid) password.requestFocus();
                     isValid = false;
                 }
-                else if (!passStr.matches(".*[!@#$%^&*()_+].*")) {
+                else if (!passStr.matches(".*[!@#$%^&*()_+-=:'`~<>.].*")) {
                     password.setError("Password must contain at least one special character");
                     if (isValid) password.requestFocus();
                     isValid = false;
@@ -106,49 +106,52 @@ public class CounselorSignupActivity extends AppCompatActivity {
 
             //PROCEEDS TO NEXT SCREEN IF ALL FIELDS ARE VALID
             if (isValid) {
-                startActivity(new Intent(CounselorSignupActivity.this, CounselorProblems.class));
-            }
 
-            OkHttpClient client = new OkHttpClient();
+                OkHttpClient client = new OkHttpClient();
 
-            RequestBody formBody = new FormBody.Builder()
-                    .add("first_name", fnameStr)
-                    .add("last_name", lnameStr)
-                    .add("credentials", credsStr)
-                    .add("password", passStr)
-                    .build();
+                RequestBody formBody = new FormBody.Builder()
+                        .add("first_name", fnameStr)
+                        .add("last_name", lnameStr)
+                        .add("credentials", credsStr)
+                        .add("password", passStr)
+                        .build();
 
-            Request request = new Request.Builder()
-                    .url()
-                    .post(formBody)
-                    .build();
+                Request request = new Request.Builder()
+                        .url("https://lamp.ms.wits.ac.za/home/s2819916/solace/couns_signup.php")
+                        .post(formBody)
+                        .build();
 
-            client.newCall(request).enqueue(new Callback() {
-                @Override
-                public void onFailure(Call call, IOException e) {
-                    e.printStackTrace();
-                }
-
-                @Override
-                public void onResponse(Call call, final Response response) throws IOException {
-                    if (!response.isSuccessful()) {
-                        throw new IOException("Unexpected code " + response);
+                client.newCall(request).enqueue(new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        e.printStackTrace();
                     }
 
-                    final String responseData = response.body().string();
-
-                    CounselorSignupActivity.this.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                processJSON(responseData);
-                            } catch (JSONException e) {
-                                throw new RuntimeException(e);
-                            }
+                    @Override
+                    public void onResponse(Call call, final Response response) throws IOException {
+                        if (!response.isSuccessful()) {
+                            throw new IOException("Unexpected code " + response);
                         }
-                    });
-                }
-            });
-            });
+
+                        runOnUiThread(() -> {
+                            startActivity(new Intent(CounselorSignupActivity.this, CounselorProblems.class));
+                        });
+
+                        final String responseData = response.body().string();
+
+    //                    CounselorSignupActivity.this.runOnUiThread(new Runnable() {
+    //                        @Override
+    //                        public void run() {
+    //                            try {
+    //                                processJSON(responseData);
+    //                            } catch (JSONException e) {
+    //                                throw new RuntimeException(e);
+    //                            }
+    //                        }
+    //                    });
+                    }
+                });
+            }
+        });
     }
 }
