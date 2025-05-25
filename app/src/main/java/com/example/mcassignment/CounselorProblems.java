@@ -35,8 +35,13 @@ public class CounselorProblems extends AppCompatActivity {
 
         OkHttpClient client = new OkHttpClient();
 
+        RequestBody formBody = new FormBody.Builder()
+                .add("Category", "Description")
+                .build();
+
         Request request = new Request.Builder()
-                .url("https://lamp.ms.wits.ac.za/home/s2819916/solace/couns_problems.php")
+                .url("http://lamp.ms.wits.ac.za/mc/test2.php?")
+                .post(formBody)
                 .build();
 
         client.newCall(request).enqueue(new Callback() {
@@ -76,9 +81,8 @@ public class CounselorProblems extends AppCompatActivity {
 
         for(int i = 0;i < ja.length();i++){
             JSONObject jo = ja.getJSONObject(i);
-            String counselorCategoryName = jo.getString("category_name");
-            String counselorDesc = jo.getString("category_description");
-            //do we get the id too? for inserting in CounsellorExpertise?
+            String counselorCategoryName = jo.getString("");
+            String counselorDesc = jo.getString("");
 
             // Create CheckBox
             CheckBox checkBox = new CheckBox(this);
