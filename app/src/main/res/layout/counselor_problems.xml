@@ -16,45 +16,47 @@
             android:id="@+id/which_probs"
             android:layout_width="268dp"
             android:layout_height="55dp"
-            android:layout_marginTop="42dp"
+            android:layout_marginTop="100dp"
             android:text="Which categories of problems do you feel comfortable dealing with?"
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <CheckBox
-            android:id="@+id/check_cat1"
-            android:layout_width="305dp"
-            android:layout_height="44dp"
-            android:layout_marginTop="30dp"
-            android:text="Category 1"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/which_probs" />
-
-        <TextView
-            android:id="@+id/desc_cat1"
-            android:layout_width="274dp"
-            android:layout_height="25dp"
-            android:layout_marginTop="8dp"
-            android:text="Description"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/check_cat1"
-            app:layout_constraintTop_toBottomOf="@+id/check_cat1" />
-
         <LinearLayout
             android:id="@+id/dynamic_views_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:orientation="vertical"
-            app:layout_constraintTop_toBottomOf="@+id/desc_cat1"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@id/which_probs"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <Button
+            android:id="@+id/counselor_problems_proceed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="16dp"
+            android:text="Proceed"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dynamic_views_container" />
+
+        <TextView
+            android:id="@+id/counsErrorTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="90dp"
+            android:textColor="@color/red"
+            android:text=""
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dynamic_views_container" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

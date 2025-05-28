@@ -2,6 +2,7 @@ package com.example.mcassignment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -43,6 +44,7 @@ public class CounselorSignupActivity extends AppCompatActivity {
         Map<EditText, String> fields = new HashMap<>();
         fields.put(fname, "First name is required");
         fields.put(lname, "Last name is required");
+        fields.put(email, "Email is required");
         fields.put(password, "Password is required");
         fields.put(passConf, "Password confirmation is required");
         fields.put(creds, "Credentials are required");
@@ -69,8 +71,15 @@ public class CounselorSignupActivity extends AppCompatActivity {
             String passConfStr = passConf.getText().toString();
             String fnameStr = fname.getText().toString();
             String lnameStr = lname.getText().toString();
+            String emailStr = email.getText().toString().trim();
             String credsStr = creds.getText().toString();
-            String emailStr = email.getText().toString();
+
+            // EMAIL VALIDATION
+            if (!emailStr.isEmpty() && !isValidEmail(emailStr)) {
+                email.setError("Please enter a valid email address");
+                if (isValid) email.requestFocus();
+                isValid = false;
+            }
 
             //ENSURE PASSWORD IS STRONG IF IT IS NOT EMPTY
             if(!passStr.isEmpty()){
@@ -158,5 +167,21 @@ public class CounselorSignupActivity extends AppCompatActivity {
                 });
             }
         });
+    }
+
+    private boolean isValidEmail(String email) {
+        if (email == null || email.isEmpty()) return false;
+
+        // Basic pattern check
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            return false;
+        }
+
+        return email.length() <= 254 &&            // RFC max length
+                !email.startsWith(".") &&           // No leading dot
+                !email.endsWith(".") &&             // No trailing dot
+                !email.contains("..") &&            // No consecutive dots
+                email.indexOf('@') > 0 &&           // @ not at start
+                email.lastIndexOf('.') > email.indexOf('@');  // Dot after @
     }
 }
