@@ -9,6 +9,8 @@ import android.widget.EditText;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.textfield.TextInputEditText;
+
 import org.json.JSONException;
 
 import java.io.IOException;
@@ -28,13 +30,14 @@ public class CounselorSignupActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //ENSURES THAT THE LAYOUT FILE IS DISPLAYED
-        setContentView(R.layout.counselor_signup);
+        setContentView(R.layout.activity_counsellor_signup);
 
-        EditText password = findViewById(R.id.couns_password);
-        EditText passConf = findViewById(R.id.couns_pass_conf);
-        EditText fname = findViewById(R.id.couns_fname);
-        EditText lname = findViewById(R.id.couns_lname);
-        EditText creds = findViewById(R.id.couns_creds);
+        TextInputEditText password = findViewById(R.id.etPassword);
+        TextInputEditText passConf = findViewById(R.id.etConfirmPassword);
+        TextInputEditText fname = findViewById(R.id.etFirstName);
+        TextInputEditText lname = findViewById(R.id.etLastName);
+        TextInputEditText creds = findViewById(R.id.etCredentials);
+        TextInputEditText email = findViewById(R.id.etEmail);
 
         //A MAP OF FIELDS AND THEIR ERROR MESSAGES
         Map<EditText, String> fields = new HashMap<>();
@@ -44,8 +47,8 @@ public class CounselorSignupActivity extends AppCompatActivity {
         fields.put(passConf, "Password confirmation is required");
         fields.put(creds, "Credentials are required");
 
-        Button proceed = findViewById(R.id.proceed_button);
-        proceed.setOnClickListener(v -> {
+        Button next = findViewById(R.id.btnNext);
+        next.setOnClickListener(v -> {
             // LOOPS THROUGH EACH FIELD AND ENSURES THAT THEY ARE NOT EMPTY
             boolean isValid = true;
             for (Map.Entry<EditText, String> entry : fields.entrySet()) {
@@ -67,6 +70,7 @@ public class CounselorSignupActivity extends AppCompatActivity {
             String fnameStr = fname.getText().toString();
             String lnameStr = lname.getText().toString();
             String credsStr = creds.getText().toString();
+            String emailStr = email.getText().toString();
 
             //ENSURE PASSWORD IS STRONG IF IT IS NOT EMPTY
             if(!passStr.isEmpty()){
@@ -114,6 +118,7 @@ public class CounselorSignupActivity extends AppCompatActivity {
                         .add("last_name", lnameStr)
                         .add("credentials", credsStr)
                         .add("password", passStr)
+                        .add("email", emailStr)
                         .build();
 
                 Request request = new Request.Builder()

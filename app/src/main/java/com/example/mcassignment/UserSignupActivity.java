@@ -97,7 +97,7 @@ public class UserSignupActivity extends AppCompatActivity {
                     if (isValid) password.requestFocus();
                     isValid = false;
                 }
-                else if (!passStr.matches(".*[!@#$%^&*()_+].*")) {
+                else if (!passStr.matches(".*[!@#$%^&*()_+-=:'`~<>.].*")) {
                     password.setError("Password must contain at least one special character");
                     if (isValid) password.requestFocus();
                     isValid = false;

@@ -40,4 +40,8 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    implementation (libs.okhttp.v430)
+    implementation (libs.material.v1110)
+    implementation ("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation ("com.github.skydoves:colorpickerview:2.2.4")
 }

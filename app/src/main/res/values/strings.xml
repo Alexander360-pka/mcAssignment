@@ -1,3 +1,30 @@
 <resources>
-    <string name="app_name">mcAssignment</string>
+    <string name="app_name">Solace</string>
+    <string name="select_role">Select Your Role</string>
+    <string name="i_am_patient">I\'m a Patient</string>
+    <string name="i_am_counsellor">I\'m a Counsellor</string>
+    <string name="counsellor_login">Counsellor Login</string>
+    <string name="patient_login">Patient Login</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="dont_have_account_sign_up">Don\'t have an account? <u>Sign Up</u></string>
+    <string name="counsellor_signup">Counsellor Sign Up</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="email">Email</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="choose_profile_color">Choose Profile Color</string>
+    <string name="next">Next</string>
+    <string name="specialization_details">Specialization Details</string>
+    <string name="credentials">Credentials</string>
+    <string name="select_specialization">Select Specialization</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="forgot_password_instructions">Enter your email to receive a verification code</string>
+    <string name="submit">Submit</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="verification_code">Verification Code</string>
+    <string name="new_password">New Password</string>
+    <string name="counsellor_dashboard">Counsellor Dashboard</string>
+    <string name="no_patients_assigned">No patients currently assigned</string>
 </resources>
