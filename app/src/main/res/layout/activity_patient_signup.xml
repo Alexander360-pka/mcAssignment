@@ -54,12 +54,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:endIconMode="password_toggle"
+            app:endIconTint="@color/colorPrimary">
 
 
             <com.google.android.material.textfield.TextInputEditText
 
-                android:id="@+id/etPassword"
+                android:id="@+id/etUserPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/password"
@@ -74,12 +76,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:endIconMode="password_toggle"
+            app:endIconTint="@color/colorPrimary">
 
 
             <com.google.android.material.textfield.TextInputEditText
 
-                android:id="@+id/etConfirmPassword"
+                android:id="@+id/etUserConfPass"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/confirm_password"
@@ -105,7 +109,7 @@
 
 
         <Button
-            android:id="@+id/btnNext"
+            android:id="@+id/btnUserNext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/next"
