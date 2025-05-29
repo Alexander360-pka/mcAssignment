@@ -57,7 +57,7 @@ public class UserProblems extends AppCompatActivity {
                     }
                 }
                 //PROCEED TO LOGIN PAGE
-                Intent intent = new Intent(UserProblems.this, UserLogIn.class);
+                Intent intent = new Intent(UserProblems.this, PatientLoginActivity.class);
                 startActivity(intent);
             }
         });

@@ -57,7 +57,7 @@ public class CounselorProblems extends AppCompatActivity {
                     }
                 }
                 //PROCEED TO LOGIN PAGE
-                Intent intent = new Intent(CounselorProblems.this, CounselorLogIn.class);
+                Intent intent = new Intent(CounselorProblems.this, CounsellorLoginActivity.class);
                 startActivity(intent);
             }
         });
