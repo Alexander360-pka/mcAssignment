@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
-        android:background="@color/colorPrimaryLight">
+        android:background="@drawable/patient_login">
 
 
         <LinearLayout
@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/patient_login"
                 android:textSize="24sp"
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="@color/black"
                 android:textStyle="bold"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="32dp"/>
@@ -67,7 +67,7 @@
                 android:layout_marginBottom="24dp"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 app:endIconMode="password_toggle"
-                app:endIconTint="@color/colorPrimary">
+                app:endIconTint="@color/white">
 
                 <com.google.android.material.textfield.TextInputEditText
 
@@ -87,8 +87,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/login"
                 android:textAllCaps="false"
-                android:backgroundTint="@color/colorPrimary"
-                android:textColor="@color/white"
+                android:backgroundTint="@color/white"
+                android:textColor="@color/black"
                 android:layout_marginBottom="16dp"
                 android:padding="12dp"/>
 
@@ -110,7 +110,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:text="@string/dont_have_account_sign_up"
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="@color/black"
                 tools:ignore="TouchTargetSizeCheck" />
 
 

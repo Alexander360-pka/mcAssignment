@@ -2,10 +2,12 @@ package com.example.mcassignment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.textfield.TextInputEditText;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -148,21 +151,10 @@ public class CounselorSignupActivity extends AppCompatActivity {
                         }
 
                         runOnUiThread(() -> {
-                            startActivity(new Intent(CounselorSignupActivity.this, CounselorProblems.class));
+                            startActivity(new Intent(CounselorSignupActivity.this, CounselorProblems.class));;
                         });
 
                         final String responseData = response.body().string();
-
-    //                    CounselorSignupActivity.this.runOnUiThread(new Runnable() {
-    //                        @Override
-    //                        public void run() {
-    //                            try {
-    //                                processJSON(responseData);
-    //                            } catch (JSONException e) {
-    //                                throw new RuntimeException(e);
-    //                            }
-    //                        }
-    //                    });
                     }
                 });
             }
@@ -177,11 +169,11 @@ public class CounselorSignupActivity extends AppCompatActivity {
             return false;
         }
 
-        return email.length() <= 254 &&            // RFC max length
-                !email.startsWith(".") &&           // No leading dot
-                !email.endsWith(".") &&             // No trailing dot
-                !email.contains("..") &&            // No consecutive dots
-                email.indexOf('@') > 0 &&           // @ not at start
-                email.lastIndexOf('.') > email.indexOf('@');  // Dot after @
+        return email.length() <= 254 &&            // MAX LENGTH
+                !email.startsWith(".") &&           // NO LEADING DOT
+                !email.endsWith(".") &&             // NO TRAILING DOT
+                !email.contains("..") &&            // NO CONSECUTIVE DOTS
+                email.indexOf('@') > 0 &&           // @ IS NOT AT THE START
+                email.lastIndexOf('.') > email.indexOf('@');  // DOT IS AFTER THE @
     }
 }

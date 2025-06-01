@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +15,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.textfield.TextInputEditText;
 import com.skydoves.colorpickerview.ColorPickerView;
 import com.skydoves.colorpickerview.listeners.ColorListener;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -175,17 +179,6 @@ public class UserSignupActivity extends AppCompatActivity {
                         });
 
                         final String responseData = response.body().string();
-
-    //                    UserSignupActivity.this.runOnUiThread(new Runnable() {
-    //                        @Override
-    //                        public void run() {
-    //                            try {
-    //                                processJSON(responseData);
-    //                            } catch (JSONException e) {
-    //                                throw new RuntimeException(e);
-    //                            }
-    //                        }
-    //                    });
                     }
                 });
             }
