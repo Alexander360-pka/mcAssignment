@@ -15,7 +15,10 @@
         android:theme="@style/Theme.McAssignment"
         tools:targetApi="31">
         <activity
-            android:name=".RoleSelectionActivity"
+            android:name=".MainActivity"
+            android:exported="true">
+        </activity>
+        <activity android:name=".RoleSelectionActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,22 +26,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"
-            android:exported="true">
-        </activity>
-        <activity android:name=".CounsellorLoginActivity"
-            android:exported="true">
-        </activity>
-        <activity android:name=".CounselorSignupActivity"
-            android:exported="true">
-        </activity>
-        <activity android:name=".UserSignupActivity"
-            android:exported="true">
-        </activity>
-        <activity android:name=".PatientLoginActivity"
-            android:exported="true">
-        </activity>
 
+        <activity android:name=".CounsellorLoginActivity" />
+        <activity android:name=".CounselorSignupActivity" />
+        <activity android:name=".CounselorProblems" />
+
+        <activity android:name=".PatientLoginActivity" />
+        <activity android:name=".UserSignupActivity" />
+        <activity android:name=".UserProblems" />
+        <activity android:name=".FindCounsellorActivity" />
     </application>
 
 </manifest>

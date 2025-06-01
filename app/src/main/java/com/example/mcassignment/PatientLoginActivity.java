@@ -112,7 +112,10 @@ public class PatientLoginActivity extends AppCompatActivity {
                                     ).show();
 
                                     // Proceed to next activity
-                                    //startActivity(new Intent(PatientLoginActivity.this, DashboardActivity.class));
+                                    Intent intent = new Intent(PatientLoginActivity.this, MainActivity.class);
+                                    intent.putExtra("CONV_ID", json.optString("conv_id", "default_conv_id"));
+                                    intent.putExtra("COUNSELOR_NAME", json.optString("counselor_name", "Counselor"));
+                                    startActivity(intent);
                                     finish();
                                 } else {
                                     // Login failed
