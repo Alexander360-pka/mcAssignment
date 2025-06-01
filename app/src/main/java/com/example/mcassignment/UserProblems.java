@@ -50,15 +50,45 @@ public class UserProblems extends AppCompatActivity {
 
             if (isValid) {
                 //GET ALL SELECTED CATEGORIES
-                List<String> selectedCategories = new ArrayList<>();
+                JSONArray selectedCategories = new JSONArray();
                 for (CheckBox checkBox : allCheckBoxes) {
                     if (checkBox.isChecked()) {
-                        selectedCategories.add(checkBox.getText().toString());
+                        selectedCategories.put(checkBox.getText().toString());
                     }
                 }
-                //PROCEED TO LOGIN PAGE
-                Intent intent = new Intent(UserProblems.this, PatientLoginActivity.class);
-                startActivity(intent);
+
+                OkHttpClient client = new OkHttpClient();
+
+                String selectedCategoriesStr = selectedCategories.toString();
+                RequestBody formBody = new FormBody.Builder()
+                        .add("category", selectedCategoriesStr)
+                        .build();
+
+                Request request = new Request.Builder()
+                        .url("https://lamp.ms.wits.ac.za/home/s2819916/solace/couns_signup.php")
+                        .post(formBody)
+                        .build();
+
+                client.newCall(request).enqueue(new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onResponse(Call call, final Response response) throws IOException {
+                        if (!response.isSuccessful()) {
+                            throw new IOException("Unexpected code " + response);
+                        }
+
+                        //PROCEED TO LOGIN PAGE
+                        runOnUiThread(() -> {
+                            startActivity(new Intent(UserProblems.this, PatientLoginActivity.class));
+                        });
+
+                        final String responseData = response.body().string();
+                    }
+                });
             }
         });
         getProblemCategories();

@@ -5,7 +5,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
-        android:background="@color/colorPrimaryLight"
+        android:background="@drawable/general"
         tools:context=".CounselorSignupActivity">
 
 
@@ -20,13 +20,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/counsellor_signup"
-                android:textSize="24sp"
-                android:textColor="@color/colorPrimaryDark"
-                android:textStyle="bold"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="24dp"/>
-
+                android:layout_marginTop="24dp"
+                android:text="@string/counsellor_signup"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
             <com.google.android.material.textfield.TextInputLayout
 
@@ -42,7 +41,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/first_name"
-                    android:inputType="textPersonName"/>
+                    android:inputType="textPersonName"
+                    android:textColorHint="@color/white"/>
 
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -117,7 +117,7 @@
                 android:layout_marginBottom="20dp"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 app:endIconMode="password_toggle"
-                app:endIconTint="@color/colorPrimary">
+                app:endIconTint="@color/white">
 
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -139,7 +139,7 @@
                 android:layout_marginBottom="16dp"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 app:endIconMode="password_toggle"
-                app:endIconTint="@color/colorPrimary">
+                app:endIconTint="@color/white">
 
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -160,8 +160,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/next"
                 android:textAllCaps="false"
-                android:backgroundTint="@color/colorPrimary"
-                android:textColor="@color/white"
+                android:backgroundTint="@color/white"
+                android:textColor="@color/black"
                 android:padding="12dp"/>
 
 

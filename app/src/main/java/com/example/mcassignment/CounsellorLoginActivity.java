@@ -113,7 +113,7 @@ public class CounsellorLoginActivity extends AppCompatActivity {
                                     ).show();
 
                                     // Proceed to next activity
-                                    //startActivity(new Intent(CounsellorLoginActivity.this, DashboardActivity.class));
+                                    //startActivity(new Intent(CounsellorLoginActivity.this, .class));
                                     finish();
                                 } else {
                                     // Login failed

@@ -24,6 +24,7 @@ import java.util.List;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -35,11 +36,14 @@ public class CounselorProblems extends AppCompatActivity {
     private Button button;
     private List<CheckBox> allCheckBoxes = new ArrayList<>();
     private TextView errorTextView;
+    private int counselorId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.counselor_problems);
 
+        if (getIntent() != null && getIntent().hasExtra("COUNSELOR_ID")) {
+            counselorId = getIntent().getIntExtra("COUNSELOR_ID", -1);}
         dynamicViewsContainer = findViewById(R.id.dynamic_views_container);
         inflater = LayoutInflater.from(this);
         button = findViewById(R.id.counselor_problems_proceed);
@@ -50,15 +54,103 @@ public class CounselorProblems extends AppCompatActivity {
 
             if (isValid) {
                 //GET ALL SELECTED CATEGORIES
-                List<String> selectedCategories = new ArrayList<>();
+                JSONArray selectedCategories = new JSONArray();
                 for (CheckBox checkBox : allCheckBoxes) {
                     if (checkBox.isChecked()) {
-                        selectedCategories.add(checkBox.getText().toString());
+                        selectedCategories.put(checkBox.getText().toString());
                     }
                 }
-                //PROCEED TO LOGIN PAGE
-                Intent intent = new Intent(CounselorProblems.this, CounsellorLoginActivity.class);
-                startActivity(intent);
+
+                OkHttpClient client = new OkHttpClient();
+
+                String selectedCategoriesStr = selectedCategories.toString();
+                RequestBody formBody = new FormBody.Builder()
+                        .add("category", selectedCategoriesStr)
+                        .build();
+
+                Request receiveRequest = new Request.Builder()
+                        .url("https://lamp.ms.wits.ac.za/home/s2819916/solace/couns_signup.php")
+                        .post(formBody)
+                        .build();
+
+                client.newCall(receiveRequest).enqueue(new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onResponse(Call call, final Response response) throws IOException {
+                        if (!response.isSuccessful()) {
+                            throw new IOException("Unexpected code " + response);
+                        }
+
+                        //PROCEED TO LOGIN PAGE
+                        runOnUiThread(() -> {
+                            startActivity(new Intent(CounselorProblems.this, CounsellorLoginActivity.class));
+                        });
+
+                        final String responseData = response.body().string();
+                    }
+                });
+
+                //SEND SELECTED CATEGORIES AND COUNSELOR ID
+                try {
+                    // CREATE JSON OBJECT CONTAINING BOTH DATA
+                    JSONObject jsonData = new JSONObject();
+                    jsonData.put("counselor_id", counselorId);
+                    jsonData.put("categories", selectedCategories);
+
+                    String jsonString = jsonData.toString();
+
+                    RequestBody body = RequestBody.create(
+                            jsonString,
+                            MediaType.parse("application/json; charset=utf-8")
+                    );
+
+                    Request sendRequest = new Request.Builder()
+                            .url("https://lamp.ms.wits.ac.za/home/s2819916/solace/couns_expertise.php")
+                            .post(body)
+                            .build();
+
+                    client.newCall(sendRequest).enqueue(new Callback() {
+                        @Override
+                        public void onFailure(Call call, IOException e) {
+                            e.printStackTrace();
+                            runOnUiThread(() -> {
+                                Toast.makeText(CounselorProblems.this,
+                                        "Failed to send data", Toast.LENGTH_SHORT).show();
+                            });
+                        }
+
+                        @Override
+                        public void onResponse(Call call, Response response) throws IOException {
+                            if (!response.isSuccessful()) {
+                                throw new IOException("Unexpected code " + response);
+                            }
+
+                            final String responseData = response.body().string();
+                            runOnUiThread(() -> {
+                                try {
+                                    JSONObject jsonResponse = new JSONObject(responseData);
+                                    if (jsonResponse.getString("status").equals("success")) {
+                                        startActivity(new Intent(CounselorProblems.this,
+                                                CounsellorLoginActivity.class));
+                                    } else {
+                                        Toast.makeText(CounselorProblems.this,
+                                                jsonResponse.getString("message"),
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            });
+                        }
+                    });
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(this, "Error creating JSON data", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         getProblemCategories();
@@ -103,8 +195,7 @@ public class CounselorProblems extends AppCompatActivity {
             JSONObject jo = ja.getJSONObject(i);
             String counselorCategoryName = jo.getString("category_name");
             String counselorDesc = jo.getString("category_desc");
-            //do we get the id too? for inserting in CounsellorExpertise?
-            //Is the id not automatically created when we input?
+
 
             //DYNAMICALLY INCREASE THE OPTIONS
             View itemView = inflater.inflate(R.layout.counselor_problem_items, dynamicViewsContainer, false);

@@ -9,50 +9,41 @@
         android:orientation="vertical"
         android:padding="24dp"
         android:gravity="center"
-        android:background="@color/colorPrimaryLight"
+        android:background="@drawable/welcomepage"
         tools:context=".RoleSelectionActivity">
 
+    <ImageView
+        android:layout_width="211dp"
+        android:layout_height="104dp"
+        android:src="@drawable/sol"/>
 
-        <ImageView
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:src="@drawable/ic_app_logo"
-            android:layout_marginBottom="32dp"/>
+    <TextView
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:text="@string/select_role"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="24sp"
+        android:textStyle="bold" />
 
+    <Button
+        android:id="@+id/btnCounsellor"
+        android:layout_width="340dp"
+        android:layout_height="50dp"
+        android:backgroundTint="@color/colorAccent"
+        android:text="@string/i_am_counsellor"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/select_role"
-            android:textSize="24sp"
-            android:textColor="@color/colorPrimaryDark"
-            android:textStyle="bold"
-            android:layout_marginBottom="48dp"/>
-
-
-        <Button
-            android:id="@+id/btnPatient"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/i_am_patient"
-            android:textAllCaps="false"
-            android:textSize="18sp"
-            android:backgroundTint="@color/colorPrimary"
-            android:textColor="@color/white"
-            android:layout_marginBottom="16dp"
-            android:padding="16dp"/>
-
-
-        <Button
-            android:id="@+id/btnCounsellor"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/i_am_counsellor"
-            android:textAllCaps="false"
-            android:textSize="18sp"
-            android:backgroundTint="@color/colorAccent"
-            android:textColor="@color/white"
-            android:padding="16dp"/>
+    <Button
+        android:id="@+id/btnPatient"
+        android:layout_width="340dp"
+        android:layout_height="50dp"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="@string/i_am_patient"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
 
 
 </LinearLayout>
