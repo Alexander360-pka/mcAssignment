@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.VideoView;
@@ -20,22 +21,9 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash);
 
-        VideoView videoView = findViewById(R.id.videoView);
-        Button btnFindMatch = findViewById(R.id.btnFindMatch);
-
-
-        String videoPath = "android.resource://" + getPackageName() + "/" + R.raw.findmatch;
-        videoView.setVideoURI(Uri.parse(videoPath));
-
-        videoView.start();
-
-
-        videoView.setOnCompletionListener(mp -> goToMainActivity());
-        btnFindMatch.setOnClickListener(v -> goToMainActivity());
-    }
-
-    private void goToMainActivity() {
-        startActivity(new Intent(this, MainActivity.class));
-        finish();
-    }
+        new Handler().postDelayed(() ->{
+                startActivity(new Intent(this, FindMatch.class));
+                finish();
+            }, 3000);
+        }
 }
