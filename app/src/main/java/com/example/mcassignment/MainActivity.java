@@ -3,8 +3,8 @@ package com.example.mcassignment;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,21 +19,18 @@ import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
-    // UI Components
     private EditText messageInput;
-    private Button sendButton, findMatchButton;
     private RecyclerView messagesView;
+    private TextView counselorNameText;
 
-    // Adapter and Data
     private MessagesAdapter adapter;
     private List<Message> messages = new ArrayList<>();
 
-    // Session State
-    private String currentUserId = "user123"; // Replace with actual user ID
-    private String currentConvId = null;
+    private String currentUserId = "user123";
+    private String currentConvId;
+    private String counselorName;
     private long lastMessageId = 0;
 
-    // Polling Handler
     private Handler handler = new Handler();
     private Runnable messagePoller;
     private static final int POLL_INTERVAL_MS = 3000;
@@ -42,21 +39,34 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // In MainActivity, add null checks:
+        currentConvId = getIntent().getStringExtra("CONV_ID");
+        counselorName = getIntent().getStringExtra("COUNSELOR_NAME");
+
+        if (currentConvId == null || counselorName == null) {
+            Toast.makeText(this, "Missing conversation data", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+
+        // Get conversation details from intent
+        currentConvId = getIntent().getStringExtra("CONV_ID");
+        counselorName = getIntent().getStringExtra("COUNSELOR_NAME");
+
         setupViews();
         setupRecyclerView();
-        setupClickListeners();
+        startMessagePolling();
     }
-    private void stopMessagePolling() {
-        if (messagePoller != null) {
-            handler.removeCallbacks(messagePoller);
-            messagePoller = null;  // Important to prevent memory leaks
-        }
-    }
+
     private void setupViews() {
         messageInput = findViewById(R.id.message_input);
-        sendButton = findViewById(R.id.send_button);
-        findMatchButton = findViewById(R.id.find_match_button);
         messagesView = findViewById(R.id.messages_view);
+        counselorNameText = findViewById(R.id.counselor_name);
+
+        counselorNameText.setText("Chat with " + counselorName);
+
+        findViewById(R.id.send_button).setOnClickListener(v -> sendChatMessage());
     }
 
     private void setupRecyclerView() {
@@ -65,54 +75,11 @@ public class MainActivity extends AppCompatActivity {
         messagesView.setAdapter(adapter);
     }
 
-    private void setupClickListeners() {
-        findMatchButton.setOnClickListener(v -> findCounselorMatch());
-        sendButton.setOnClickListener(v -> sendChatMessage());
-    }
-
-    private void findCounselorMatch() {
-        ApiClient.findMatch(currentUserId, new ApiClient.ApiCallback() {
-            @Override
-            public void onSuccess(JSONObject response) {
-                runOnUiThread(() -> {
-                    try {
-                        if (response.has("error")) {
-                            showToast(response.getString("error"));
-                            return;
-                        }
-                        handleMatchResponse(response);
-                    } catch (JSONException e) {
-                        Log.e("MainActivity", "Response parsing error", e);
-                        showToast("Invalid server response");
-                    }
-                });
-            }
-
-            @Override
-            public void onError(Exception e) {
-                runOnUiThread(() -> showToast("Network error: " + e.getMessage()));
-            }
-        });
-    }
-
-    private void handleMatchResponse(JSONObject response) throws JSONException {
-        if (response.getBoolean("matched")) {
-            currentConvId = response.getString("conv_id");
-            JSONObject counsellor = response.getJSONObject("counsellor");
-            showToast("Matched with: " + counsellor.getString("username"));
-            startMessagePolling();
-        } else {
-            showToast(response.optString("reason", "No counselors available"));
-        }
-    }
-
     private void startMessagePolling() {
         stopMessagePolling();
         messagePoller = new Runnable() {
             @Override
             public void run() {
-                if (currentConvId == null) return;
-
                 ApiClient.getMessages(currentConvId, lastMessageId, new ApiClient.ApiCallback() {
                     @Override
                     public void onSuccess(JSONObject response) {
@@ -128,13 +95,19 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(Exception e) {
-                        Log.w("MainActivity", "Polling retry in " + POLL_INTERVAL_MS + "ms");
+                        Log.w("MainActivity", "Polling error, retrying...", e);
                         handler.postDelayed(messagePoller, POLL_INTERVAL_MS);
                     }
                 });
             }
         };
         handler.post(messagePoller);
+    }
+
+    private void stopMessagePolling() {
+        if (messagePoller != null) {
+            handler.removeCallbacks(messagePoller);
+        }
     }
 
     private void processIncomingMessages(JSONObject response) throws JSONException {
@@ -144,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
             addMessageToChat(
                     msg.getString("sender_id"),
                     msg.getString("content"),
-                    msg.optString("timestamp", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date()))
+                    msg.optString("timestamp", getCurrentTimestamp())
             );
             lastMessageId = msg.getLong("mess_id");
         }
@@ -152,12 +125,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void sendChatMessage() {
         String content = messageInput.getText().toString().trim();
-        if (content.isEmpty() || currentConvId == null) return;
+        if (content.isEmpty()) return;
 
         // Optimistic UI update
-        String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-                .format(new Date());
-        addMessageToChat(currentUserId, content, timestamp);
+        addMessageToChat(currentUserId, content, getCurrentTimestamp());
         messageInput.setText("");
 
         ApiClient.sendMessage(currentConvId, currentUserId, content,
@@ -173,33 +144,30 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(Exception e) {
-                        runOnUiThread(() -> showToast("Failed to send. Retrying..."));
-                        // Consider message queue for retry logic
+                        runOnUiThread(() ->
+                                Toast.makeText(MainActivity.this, "Failed to send message", Toast.LENGTH_SHORT).show()
+                        );
                     }
                 });
     }
 
-    // ... (keep existing utility methods addMessageToChat, scrollToLatestMessage, showToast, etc.)
-    // ==================== CHAT UTILITIES ====================
     private void addMessageToChat(String senderId, String content, String timestamp) {
         runOnUiThread(() -> {
             adapter.addMessage(new Message(senderId, content, timestamp));
-            scrollToLatestMessage();
+            messagesView.smoothScrollToPosition(adapter.getItemCount() - 1);
         });
     }
 
-    private void scrollToLatestMessage() {
-        messagesView.smoothScrollToPosition(adapter.getItemCount() - 1);
-    }
-
-    private void showToast(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    private String getCurrentTimestamp() {
+        return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+                .format(new Date());
     }
 
     @Override
     protected void onDestroy() {
         stopMessagePolling();
-        handler.removeCallbacksAndMessages(null);
         super.onDestroy();
     }
+
+
 }
