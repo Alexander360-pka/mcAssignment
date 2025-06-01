@@ -32,7 +32,7 @@ android {
 }
 
 dependencies {
-    implementation(libs.okhttp)
+
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
@@ -40,8 +40,13 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
-    implementation (libs.okhttp.v430)
-    implementation (libs.material.v1110)
-    implementation ("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation ("org.json:json:20210307")
     implementation ("com.github.skydoves:colorpickerview:2.2.4")
+    implementation ("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation ("com.squareup.okhttp3:okhttp:4.9.3")
+    implementation("io.socket:socket.io-client:2.1.0") {
+        exclude(group="org.json", module= "json")
+    }
+    implementation("com.google.code.gson:gson:2.10.1")// For JSON handling
+    implementation("androidx.recyclerview:recyclerview:1.3.2") // For message list
 }
