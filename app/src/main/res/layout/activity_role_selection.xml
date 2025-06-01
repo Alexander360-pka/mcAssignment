@@ -12,10 +12,7 @@
         android:background="@drawable/welcomepage"
         tools:context=".RoleSelectionActivity">
 
-    <ImageView
-        android:layout_width="211dp"
-        android:layout_height="104dp"
-        android:src="@drawable/sol"/>
+
 
     <TextView
         android:layout_width="200dp"
