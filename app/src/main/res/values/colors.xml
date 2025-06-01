@@ -8,4 +8,5 @@
     <color name="colorPrimaryLight">#E8EAF6</color>
     <color name="chatBackground">#EEEEEE</color>
     <color name="red">#FF0000</color>
+    <color name="purple_500">#6200EE</color>
 </resources>
