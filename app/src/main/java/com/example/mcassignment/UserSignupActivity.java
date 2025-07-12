@@ -165,20 +165,50 @@ public class UserSignupActivity extends AppCompatActivity {
                 client.newCall(request).enqueue(new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
-                        e.printStackTrace();
+                        runOnUiThread(() -> {
+                            Toast.makeText(UserSignupActivity.this,
+                                    "Network error: " + e.getMessage(),
+                                    Toast.LENGTH_LONG).show();
+                        });
                     }
 
                     @Override
-                    public void onResponse(Call call, final Response response) throws IOException {
-                        if (!response.isSuccessful()) {
-                            throw new IOException("Unexpected code " + response);
-                        }
+                    public void onResponse(Call call, Response response) throws IOException {
+                        String responseData = response.body().string();
 
                         runOnUiThread(() -> {
-                            startActivity(new Intent(UserSignupActivity.this, UserProblems.class));;
-                        });
+                            try {
+                                JSONObject json = new JSONObject(responseData);
 
-                        final String responseData = response.body().string();
+                                if (json.has("success") && json.getBoolean("success")) {
+                                    // Login successful
+                                    Toast.makeText(
+                                            UserSignupActivity.this,
+                                            json.optString("message", "Registration successful"),
+                                            Toast.LENGTH_SHORT
+                                    ).show();
+
+                                    // Proceed to next activity
+                                    Intent intent = new Intent(UserSignupActivity.this, UserProblems.class);
+                                    startActivity(intent);
+                                    finish();
+                                } else {
+                                    // Login failed
+                                    String error = json.optString("error", "Unknown error occurred");
+                                    Toast.makeText(
+                                            UserSignupActivity.this,
+                                            "Login failed: " + error,
+                                            Toast.LENGTH_LONG
+                                    ).show();
+                                }
+                            } catch (JSONException e) {
+                                Toast.makeText(
+                                        UserSignupActivity.this,
+                                        "Invalid server response",
+                                        Toast.LENGTH_LONG
+                                ).show();
+                            }
+                        });
                     }
                 });
             }

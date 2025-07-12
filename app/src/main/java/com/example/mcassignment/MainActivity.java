@@ -144,9 +144,9 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(Exception e) {
-                        runOnUiThread(() ->
-                                Toast.makeText(MainActivity.this, "Failed to send message", Toast.LENGTH_SHORT).show()
-                        );
+//                        runOnUiThread(() ->
+//                                Toast.makeText(MainActivity.this, "Failed to send message", Toast.LENGTH_SHORT).show()
+//                        );
                     }
                 });
     }

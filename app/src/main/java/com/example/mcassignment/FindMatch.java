@@ -15,7 +15,7 @@ public class FindMatch extends AppCompatActivity {
 
         Button btnFindMatch = findViewById(R.id.btnFindMatch);
         btnFindMatch.setOnClickListener(v -> {
-            startActivity(new Intent(this, MainActivity.class));
+            startActivity(new Intent(FindMatch.this, MainActivity.class));
         });
     }
 }

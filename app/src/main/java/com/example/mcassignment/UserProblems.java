@@ -83,7 +83,7 @@ public class UserProblems extends AppCompatActivity {
 
                         //PROCEED TO LOGIN PAGE
                         runOnUiThread(() -> {
-                            startActivity(new Intent(UserProblems.this, PatientLoginActivity.class));
+                            startActivity(new Intent(UserProblems.this, FindMatch.class));
                         });
 
                         final String responseData = response.body().string();
