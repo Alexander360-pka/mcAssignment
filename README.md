@@ -1,6 +1,6 @@
 # Solace 💬
 
-**Solace** is a secure counselling platform designed to connect users with professional counsellors while maintaining privacy and anonymity. This project is a **real-time messaging app** developed as part of COMS2013 and COMS2002 coursework.
+**Solace** is a secure counselling platform designed to connect users with professional counsellors while maintaining privacy and anonymity. This project is a **real-time messaging app** developed as part of COMS2013 and COMS2002 coursework by Alex Gitee, Shannon Chisanga, Natasha Dobah and Nhlamulo Mabuza.
 
 ## ✨ Features
 - 🔒 Secure, anonymous user accounts  
